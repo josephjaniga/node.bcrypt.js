@@ -11,8 +11,12 @@ var promises = require('./promises');
 
 /// generate a salt (sync)
 /// @param {Number} [rounds] number of rounds (default 10)
+/// @param {String} [minor] ?? (default 'b')
 /// @return {String} salt
-module.exports.genSaltSync = function genSaltSync(rounds, minor) {
+module.exports.genSaltSync = function genSaltSync(rounds, minor, saltBytes) {
+
+    var saltBytes = saltBytes || crypto.randomBytes(16);
+
     // default 10 rounds
     if (!rounds) {
         rounds = 10;
@@ -26,7 +30,7 @@ module.exports.genSaltSync = function genSaltSync(rounds, minor) {
         throw new Error('minor must be either "a" or "b"');
     }
 
-    return bindings.gen_salt_sync(minor, rounds, crypto.randomBytes(16));
+    return bindings.gen_salt_sync(minor, rounds, saltBytes);
 };
 
 /// generate a salt
